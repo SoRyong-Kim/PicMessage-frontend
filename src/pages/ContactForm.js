@@ -8,7 +8,7 @@ const styles = {
   container: {
     display: "flex",
     justifyContent: "space-between",
-    maxWidth: "1200px",
+    maxWidth: "80%",
     margin: "50px auto",
     padding: "30px",
     backgroundColor: "#f5f5f5",
@@ -18,10 +18,10 @@ const styles = {
   },
   formContainer: {
     flex: 1.5,
-    marginRight: "40px",
+    marginRight: "30px",
   },
   tableContainer: {
-    flex: 2,
+    flex: 3,
   },
   completeButton: {
     position: "absolute",
@@ -43,7 +43,7 @@ const ContactForm = () => {
     name: "",
     phone: "",
     tag: "",
-    note: "",
+    tone: "",
   });
 
   const navigate = useNavigate();

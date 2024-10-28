@@ -1,10 +1,10 @@
 // FormContainer.js
-import React from "react";
+import React, { useState } from "react";
 
 const styles = {
   title: {
     textAlign: "center",
-    color: "#000", // 검은색 제목
+    color: "#000",
     marginBottom: "20px",
     fontSize: "24px",
     fontWeight: "bold",
@@ -32,18 +32,48 @@ const styles = {
     cursor: "pointer",
     transition: "background-color 0.3s",
   },
+  errorMessage: {
+    color: "red",
+    fontSize: "14px",
+    marginTop: "-15px",
+    marginBottom: "10px",
+  },
 };
 
 const FormContainer = ({ contact, setContact, setContacts }) => {
+  const [phoneError, setPhoneError] = useState("");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "phone") {
+      // 전화번호 형식이 올바른지 검사
+      const phonePattern = /^010\d{8}$/;
+      if (value && !phonePattern.test(value)) {
+        setPhoneError("올바른 형식: 01012345678");
+      } else {
+        setPhoneError("");
+      }
+    }
+
     setContact((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!contact.phone) {
+      setPhoneError("전화번호를 입력해주세요.");
+      return;
+    }
+
+    if (phoneError) {
+      alert("전화번호 형식을 확인해주세요.");
+      return;
+    }
+
     setContacts((prev) => [...prev, contact]);
-    setContact({ name: "", phone: "", tag: "", note: "" });
+    setContact({ name: "", phone: "", tag: "", tone: "" });
   };
 
   return (
@@ -63,26 +93,27 @@ const FormContainer = ({ contact, setContact, setContacts }) => {
         <input
           type="text"
           name="phone"
-          placeholder="번호 입력"
+          placeholder="전화번호 입력 (예: 01012345678)"
           value={contact.phone}
           onChange={handleChange}
           style={styles.input}
         />
-        <label>태그:</label>
+        {phoneError && <p style={styles.errorMessage}>{phoneError}</p>}
+        <label>특징:</label>
         <input
           type="text"
           name="tag"
-          placeholder="태그 입력"
+          placeholder="특징 입력"
           value={contact.tag}
           onChange={handleChange}
           style={styles.input}
         />
-        <label>특이사항:</label>
+        <label>어조:</label>
         <input
           type="text"
-          name="note"
-          placeholder="특이사항 입력"
-          value={contact.note}
+          name="tone"
+          placeholder="어조 입력"
+          value={contact.tone}
           onChange={handleChange}
           style={styles.input}
         />
